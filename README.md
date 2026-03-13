@@ -36,10 +36,13 @@ The firmware is located in `Firmware/JKH_3_sensor_1` and built with PlatformIO.
 1. Install [PlatformIO](https://platformio.org/) in your development environment (e.g., VS Code).
 2. Open the `Firmware/JKH_3_sensor_1` folder in the PlatformIO project.
 3. Build the project:
+
    ```sh
    pio run
    ```
+
 4. Upload to the target microcontroller:
+
    ```sh
    pio run --target upload
    ```
