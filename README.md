@@ -54,7 +54,9 @@ Refer to the BOM and datasheets for component selection and placement. Use the s
 
 ## License
 
-This project is open source. You can specify a license if desired (e.g., MIT License).
+This project is distributed under the [MIT License](LICENSE).
+
+See the `LICENSE` file for the full terms and conditions.
 
 ## Contact
 
