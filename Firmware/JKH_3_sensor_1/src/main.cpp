@@ -9,7 +9,7 @@ const int pinLED = 4;   // PB4 - Status LED (Optional, on your PCB)
 
 // --- Debounce Settings ---
 const unsigned long debounceDelay = 15; // 15ms filter for factory noise
-// Default state is HIGH because of your physical 10k pull-up resistors
+// Default state is HIGH because of physical 10k pull-up resistors
 bool sensorState[3] = {HIGH, HIGH, HIGH}; 
 bool lastReading[3] = {HIGH, HIGH, HIGH};
 unsigned long lastDebounceTime[3] = {0, 0, 0};
@@ -74,24 +74,25 @@ void loop() {
 
   // 3. Set Flags on Bottle ARRIVAL 
   // (Sensor connects to GND -> ATtiny reads LOW)
-  if (changedTop && sensorState[0] == LOW) flagTop = true;
-  if (changedMid && sensorState[1] == LOW) flagMid = true;
-  if (changedBot && sensorState[2] == LOW) flagBot = true;
+  if (changedTop && (sensorState[0] == false)) flagTop = true;
+  if (changedMid && (sensorState[1] == false)) flagMid = true;
+  if (changedBot && (sensorState[2] == false)) flagBot = true;
 
   // 4. Evaluate Output on Bottle DEPARTURE (The Neck/Gap)
   // (Sensor floats -> Pull-up resistor kicks in -> ATtiny reads HIGH)
   bool triggerPulse = false;
 
+
   // Highest priority: Big Bottle Neck
-  if (changedTop && sensorState[0] == HIGH) {
+  if (changedTop && (sensorState[0] == HIGH)) {
     if (flagTop) triggerPulse = true;
   }
   // Medium priority: Medium Bottle Neck (Ignored if Top flag is active)
-  else if (changedMid && sensorState[1] == HIGH) {
+  else if (changedMid && (sensorState[1] == HIGH)) {
     if (flagMid && !flagTop) triggerPulse = true;
   }
   // Lowest priority: Small Bottle Neck (Ignored if Top or Mid flags are active)
-  else if (changedBot && sensorState[2] == HIGH) {
+  else if (changedBot && (sensorState[2] == HIGH)) {
     if (flagBot && !flagTop && !flagMid) triggerPulse = true;
   }
 

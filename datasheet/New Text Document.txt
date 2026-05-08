@@ -1,0 +1,13 @@
+QS18VN6LP > npn
+when triggered, it internally connects the output wire to the Blue wire (Ground).
+
+Light Operate (Black Wire) vs. Dark Operate (White Wire): * Light Operate (LO): Triggers when the beam is UNBLOCKED (sees the reflector).
+
+Dark Operate (DO): Triggers when the beam is BLOCKED (bottle is passing).
+
+Recommendation: We want to know when a bottle is present, so we will use the White wire (Dark Operate).
+
+
+connect Brown to 24V, Blue to GND, and White to the Signal pin.
+
+the PLC input needs to be configured as "Sourcing" or pulled up to 24V internally, which is standard for NPN inputs).

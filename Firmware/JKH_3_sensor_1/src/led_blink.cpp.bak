@@ -1,0 +1,16 @@
+#include <Arduino.h>
+
+// PB4 corresponds to Arduino Digital Pin 4
+// This is Physical Pin 3 on the ATtiny85 chip
+const int pinLED = 4;   
+
+void setup() {
+    pinMode(pinLED, OUTPUT);
+}
+
+void loop() {
+    digitalWrite(pinLED, HIGH);
+    delay(1000); // Now exactly 0.5 seconds because of the 8MHz fuse
+    digitalWrite(pinLED, LOW);
+    delay(1000);
+}

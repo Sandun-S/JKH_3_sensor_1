@@ -1,0 +1,89 @@
+=========================================
+          [ START OF LOOP ]
+=========================================
+                 |
+                 v
+   +---------------------------+
+   | 1. CHECK PLC PULSE TIMER  |
+   +---------------------------+
+                 |
+         Is Pulse Active?
+        /                \
+     [YES]              [NO]
+       |                  |
+ Has 50ms passed?         |
+    /       \             |
+ [YES]      [NO]          |
+   |          |           |
+ Turn OFF     |           |
+ Transistor   |           |
+   |          |           |
+   +----------+-----------+
+                 |
+                 v
+   +---------------------------+
+   | 2. READ & DEBOUNCE PINS   |
+   +---------------------------+
+   | Check Top, Mid, Bot pins. |
+   | Ignore noise < 15ms.      |
+   +---------------------------+
+                 |
+                 v
+   +---------------------------+
+   | 3. CHECK BOTTLE ARRIVAL   |
+   +---------------------------+
+                 |
+   Did Top change to LOW (GND)? ----> [YES] --> Set flagTop = true
+                 |
+   Did Mid change to LOW (GND)? ----> [YES] --> Set flagMid = true
+                 |
+   Did Bot change to LOW (GND)? ----> [YES] --> Set flagBot = true
+                 |
+                 v
+   +---------------------------+
+   | 4. CHECK BOTTLE DEPARTURE |
+   |    (PRIORITY LOGIC)       |
+   +---------------------------+
+                 |
+   Did Top change to HIGH (5V)? 
+   AND was flagTop true?       -----------> [YES] ---> Set Trigger = TRUE
+                 |                                          |
+               [NO]                                         |
+                 |                                          |
+   Did Mid change to HIGH (5V)?                             |
+   AND was flagMid true?                                    |
+   AND is flagTop FALSE?       -----------> [YES] ---> Set Trigger = TRUE
+                 |                                          |
+               [NO]                                         |
+                 |                                          |
+   Did Bot change to HIGH (5V)?                             |
+   AND was flagBot true?                                    |
+   AND is flagTop FALSE?                                    |
+   AND is flagMid FALSE?       -----------> [YES] ---> Set Trigger = TRUE
+                 |                                          |
+               [NO]                                         |
+                 |                                          |
+                 +------------------------------------------+
+                 |
+                 v
+   +---------------------------+
+   | 5. EXECUTE PLC PULSE      |
+   +---------------------------+
+                 |
+          Is Trigger TRUE?
+         /                \
+      [YES]              [NO]
+        |                  |
+  1. Turn ON Transistor    |
+  2. Start 50ms Timer      |
+  3. Set Pulse Active      |
+  4. Wipe ALL Flags to     |
+     False (Prevents       |
+     double-counting)      |
+        |                  |
+        +---------+--------+
+                  |
+                  v
+=========================================
+     [ END OF LOOP -> RESTART FAST ]
+=========================================
